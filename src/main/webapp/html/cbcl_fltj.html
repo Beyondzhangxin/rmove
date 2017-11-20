@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bg_charts.css">
+    <script src="../js/jquery2.0.js"></script>
+    <script src="../laydate/laydate.js"></script>
+    <script src="../js/echarts.js"></script>
+    <link href="../css/jquery.circliful.css" rel="stylesheet" type="text/css" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="../js/jquery.circliful.min.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-more.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/solid-gauge.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-3d.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/exporting.js"></script>
+</head>
+<body>
+    <nav class="float_l">
+        <ul>
+            <li class="nav_li">
+                <a > <img src="../images/icon_1.png" class="nav_icon" alt=""> 全国机动车保有量</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_2.png" class="nav_icon" alt=""> 排放量现状分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_3.png" class="nav_icon" alt=""> 趋势及关联分析</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_4.png" class="nav_icon" alt=""> 超标车辆分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_5.png" class="nav_icon" alt=""> 高排放车辆分析</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="float_l charts_detail">
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>地区排名</li>
+                <li class="main_ul_active"><a href="cbcl_fltj.html">分类统计</a></li>
+                <li><a href="cbcl_rllx.html">燃料类型统计</a></li>
+                <li><a href="cbcl_pfbz.html">排放标准统计</a></li>
+                <li ><a href="cbcl_cbch.html">超标车型统计</a></li>
+                <li ><a href="cbcl_cbcljy.html">超标车辆检验机构统计</a></li>
+                <li>使用年限统计</li>
+                <li>行驶里程统计</li>
+                <li>超标车辆查询</li>
+            </ul>
+        </div>
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择省</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                     </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择市</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+                </li>
+                <li>
+                    时间选择  <input type="text" id="startTime" class="txtinput startTime"  name="startTime">
+                </li>
+                <li>
+                    <input type="text" id="endTime" class="txtinput endTime"  name="endTime">
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">统计车型选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">企业选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <input type="button" value="搜索" class="nav_search">
+                </li>
+            </ul>
+        </div>
+        <div class="charts_div">
+            <p class="charts_title">CO超标车型占比</p>
+            <div class="float_l" id="myStat_co_1" data-dimension="180" data-text="27%" data-info="低速汽车 1200" data-width="15" data-fontsize="20" data-percent="27" data-fgcolor="#68D8AD" data-bgcolor="#eee"></div>
+
+            <div class="float_l" id="myStat_co_2" data-dimension="180" data-text="2%" data-info="摩托车 100" data-width="15" data-fontsize="20" data-percent="2" data-fgcolor="#97C835" data-bgcolor="#eee"></div>
+
+            <div class="float_l" id="myStat_co_3" data-dimension="180" data-text="71%" data-info="汽车 3214" data-width="15" data-fontsize="20" data-percent="71" data-fgcolor="#A596D1" data-bgcolor="#eee"></div>
+            <br class="clearfix">
+            <div>
+                <span class="myStat_span">低速汽车 1200</span>
+                <span class="myStat_span">摩托车 100</span>
+                <span class="myStat_span">汽车 3214</span>
+            </div>
+        </div>
+        <div class="charts_div" id="hc_cbch"></div>
+        <div class="charts_div" id="myStat_nox"></div>
+        <div class="charts_div" id="PM_cbch"></div>
+    </div>
+    <script>
+        $(".nav_li").eq(3).addClass("nav_active");
+        $(".nav_li").click(function(){
+            $(this).addClass("nav_active").siblings().removeClass("nav_active");
+        })
+        laydate({
+            elem: '#startTime',
+            event: 'focus'
+        });
+        laydate({
+            elem: '#endTime',
+            event: 'focus'
+        });
+        $( document ).ready(function() {
+            $('#myStat_co_1').circliful();
+            $('#myStat_co_2').circliful();
+            $('#myStat_co_3').circliful();
+        });
+
+        /*333333333333    NOX超标车型占比*/
+        function showStatNoxChart(){
+            var myStat_nox = echarts.init(document.getElementById('myStat_nox'));
+            myStat_nox.setOption({
+                title : {
+                    text: 'NOX超标车型占比',
+                    x:'left'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{b}: {c} ({d}%)"
+                },
+                toolbox: {
+                    show : true,
+                    right:20,
+                    feature : {
+                        saveAsImage : {show: true}
+                    }
+                },
+                color:['#289DCA','#E9DA33','#F56C87'],
+                backgroundColor:"#fff",
+                legend: {
+                    type: 'scroll',
+                    orient: 'vertical',
+                    right: 10,
+                    top: 40,
+                    bottom: 20,
+                    data: [
+                        {value:3214, name:'汽车'},
+                        {value:1200, name:'低速汽车'},
+                        {value:100, name:'摩托车'},
+                    ],
+                },
+                series: [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: [
+                            {value:3214, name:'汽车'},
+                            {value:1200, name:'低速汽车'},
+                            {value:100, name:'摩托车'},
+                        ],
+                    }
+                ]
+            })
+
+        }
+        showStatNoxChart();
+
+   /*  2222222222222 活力图*/
+        function showHcCbch(){
+            Highcharts.chart('hc_cbch', {
+                        chart: {
+                            type: 'solidgauge',
+                            marginTop: 50
+                        },
+                        /*credits: {
+                            text: 'hcharts.cn',
+                            href: 'http://www.hcharts.cn'
+                        },*/
+                credits : {
+                    enabled:false//不显示highCharts版权信息
+                },
+                legend: {
+                    align: 'right', //水平方向位置
+                    verticalAlign: 'top', //垂直方向位置
+                    x: 0, //距离x轴的距离
+                    y: 50,
+                    layout:'vertical',//距离Y轴的距离,
+                },
+                        title: {
+                            text: 'HC超标车型占比',
+                            align:'left',
+                            style: {
+                                fontSize: '18px',
+                                fontWeight:'bold',
+                            },
+                        },
+                        tooltip: {
+                            borderWidth: 0,
+                            backgroundColor: 'none',
+                            shadow: false,
+                            style: {
+                                fontSize: '16px'
+                            },
+                            pointFormat: '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}%</span>',
+                            positioner: function (labelWidth, labelHeight) {
+                                return {
+                                    x: 280 - labelWidth / 2,
+                                    y: 150
+                                };
+                            }
+                        },
+                        pane: {
+                            startAngle: 0,
+                            endAngle: 360,
+                            background: [{ // Track for Move
+                                outerRadius: '112%',
+                                innerRadius: '88%',
+                                backgroundColor: '#fff',
+                                //Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.3).get(),
+                                borderWidth: 0
+                            }, { // Track for Exercise
+                                outerRadius: '87%',
+                                innerRadius: '63%',
+                                backgroundColor:'#fff',
+                                borderWidth: 0
+                            }, { // Track for Stand
+                                outerRadius: '62%',
+                                innerRadius: '38%',
+                                backgroundColor: '#fff',
+                                borderWidth: 0
+                            }]
+                        },
+                        yAxis: {
+                            min: 0,
+                            max: 100,
+                            lineWidth: 0,
+                            tickPositions: []
+                        },
+                        plotOptions: {
+                            solidgauge: {
+                                borderWidth: '30px',
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                linecap: 'round',
+                                stickyTracking: false
+                            }
+                        },
+                        series: [{
+                            name: '汽车',
+                            // borderColor: Highcharts.getOptions().colors[1],
+                            borderColor:'#3688A0',
+                            data: [{
+                                color: '#3688A0',
+                                // color:'yellow',
+                                radius: '100%',
+                                innerRadius: '100%',
+                                y: 71  /*显示百分比*/
+                            }]
+                        }, {
+                            name: '低速汽车',
+                            borderColor: '#E14B48',
+                            data: [{
+                                color: '#E14B48',
+                                radius: '75%',
+                                innerRadius: '75%',
+                                y: 27         /*显示百分比*/
+                            }]
+                        }, {
+                            name: '摩托车',
+                            borderColor: '#53B395',
+                            data: [{
+                                color: '#53B395',
+                                radius: '50%',
+                                innerRadius: '50%',
+                                y: 2   /*显示百分比*/
+                            }]
+                        }]
+                    }
+            );
+        }
+        showHcCbch()
+/*44444444444444444   PM 超标车型占比*/
+        function showPM_cbch(){
+            $('#PM_cbch').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: 0,
+                    plotShadow: false
+                },
+                credits : {
+                    enabled:false//不显示highCharts版权信息
+                },
+                colors:['#E08DA9','#E24A47','#34A7D4'],
+                title: {
+                    text: 'PM 超标车型占比',
+                    align: 'left',
+                    style: {
+                        fontSize: '18px',
+                        fontWeight:'bold',
+                    },
+                },
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: '{point.name}: {point.value}<b>{point.percentage:.1f}%</b>'
+                },
+                legend: {
+                    align: 'right', //水平方向位置
+                    verticalAlign: 'top', //垂直方向位置
+                    x: 0, //距离x轴的距离
+                    y: 50,
+                    layout:'vertical',//距离Y轴的距离,
+
+                },
+                plotOptions: {
+                    pie: {
+                        showInLegend: true,
+                        dataLabels: {
+                            enabled: true,
+                            distance: -50,
+                            style: {
+                                fontWeight: 'bold',
+                                color: 'white',
+                                textShadow: '0px 1px 2px black'
+                            }
+                        },
+                        startAngle: -90,
+                        endAngle: 90,
+                        center: ['50%', '75%']
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: '浏览器占比',
+                    innerSize: '50%',
+                    data: [
+                        ['低速汽车',   30.0],
+                        ['摩托车',20],
+                        ['汽车',       50.0],
+                    ]
+                }]
+            });
+        }
+        showPM_cbch()
+    </script>
+
+</body>
+</html>

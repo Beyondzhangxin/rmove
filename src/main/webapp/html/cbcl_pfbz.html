@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bg_charts.css">
+    <script src="../js/jquery2.0.js"></script>
+    <script src="../laydate/laydate.js"></script>
+    <script src="../amcharts/amcharts.js" type="text/javascript"></script>
+    <script src="../amcharts/pie.js" type="text/javascript"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-more.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/solid-gauge.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-3d.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/exporting.js"></script>
+</head>
+<body>
+    <nav class="float_l">
+        <ul>
+            <li class="nav_li">
+                <a > <img src="../images/icon_1.png" class="nav_icon" alt=""> 全国机动车保有量</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_2.png" class="nav_icon" alt=""> 排放量现状分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_3.png" class="nav_icon" alt=""> 趋势及关联分析</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_4.png" class="nav_icon" alt=""> 超标车辆分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_5.png" class="nav_icon" alt=""> 高排放车辆分析</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="float_l charts_detail">
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>地区排名</li>
+                <li><a href="cbcl_fltj.html">分类统计</a></li>
+                <li><a href="cbcl_rllx.html">燃料类型统计</a></li>
+                <li class="main_ul_active"><a href="cbcl_pfbz.html">排放标准统计</a></li>
+                <li><a href="cbcl_cbch.html">超标车型统计</a></li>
+                <li><a href="cbcl_cbcljy.html">超标车辆检验机构统计</a></li>
+                <li>使用年限统计</li>
+                <li>行驶里程统计</li>
+                <li>超标车辆查询</li>
+            </ul>
+        </div>
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择省</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                     </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择市</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+                </li>
+                <li>
+                    时间选择  <input type="text" id="startTime" class="txtinput startTime"  name="startTime">
+                </li>
+                <li>
+                    <input type="text" id="endTime" class="txtinput endTime"  name="endTime">
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">统计车型选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">企业选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <input type="button" value="搜索" class="nav_search">
+                </li>
+            </ul>
+        </div>
+        <div class="charts_div" id="aachartdiv"></div>
+        <div class="charts_div" id="bbchartdiv"></div>
+        <div class="charts_div" id="ccchartdiv"></div>
+        <div class="charts_div" id="ddchartdiv"></div>
+
+    </div>
+</body>
+<script>
+    $(".nav_li").eq(3).addClass("nav_active");
+    $(".nav_li").click(function(){
+        $(this).addClass("nav_active").siblings().removeClass("nav_active");
+    })
+    laydate({
+        elem: '#startTime',
+        event: 'focus'
+    });
+    laydate({
+        elem: '#endTime',
+        event: 'focus'
+    });
+
+/*  11111111111111111111111  */
+    function aaChartDiv(){
+        $('#aachartdiv').highcharts({
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            credits : {
+                enabled:false//不显示highCharts版权信息
+            },
+            title: {
+                text: 'CO超标车辆排放标准占比',
+                align:'left',
+                style: {
+                    fontSize: '18px',
+                    fontWeight:'bold',
+                }
+            },
+            colors:['#E75A48','#78D1BF','#A46B8B','#18BAE0','#084E70','#FFC450'],
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            legend: {
+                align: 'right', //水平方向位置
+                verticalAlign: 'top', //垂直方向位置
+                x: 0, //距离x轴的距离
+                y: 50,
+                layout:'vertical',//距离Y轴的距离,
+
+            },
+            plotOptions: {
+                pie: {
+                    showInLegend: true,
+                    allowPointSelect: false,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: false,
+                        format: '{point.name}'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'CO超标车辆排放标准占比',
+                data: [
+                    ['国Ⅰ前',   34.0],
+                    ['国Ⅰ',       24.0],
+                    ['国Ⅱ',    17.0],
+                    ['国Ⅲ',    2.0],
+                    ['国Ⅳ',    4.0],
+                    ['国Ⅴ及以上',    19.0],
+                ]
+            }]
+        });
+    }
+    aaChartDiv()
+/*222222222222222222*/
+    function bbChartDiv(){
+        $('#bbchartdiv').highcharts({
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45
+                }
+            },
+            colors:['#1B9BD8','#632578','#FDEA14','#F19005','#CE1422','#028E38'],
+            title: {
+                text: 'HC超标车辆排放标准占比',
+                align:'left',
+                style: {
+                    fontSize: '18px',
+                    fontWeight:'bold',
+                }
+            },
+            credits : {
+                enabled:false//不显示highCharts版权信息
+            },
+            legend: {
+                align: 'right', //水平方向位置
+                verticalAlign: 'top', //垂直方向位置
+                x: 0, //距离x轴的距离
+                y: 50,
+                layout:'vertical',//距离Y轴的距离,
+
+            },
+            plotOptions: {
+                pie: {
+                    showInLegend: true,
+                    innerSize: 100,
+                    depth: 45,
+                    dataLabels: {
+                        enabled: false,
+                        format: '{point.name}'
+                    }
+                }
+            },
+            series: [{
+                name: 'HC超标车辆排放标准占比',
+                data:[
+                    ['国Ⅰ前',   34.0],
+                    ['国Ⅰ',       24.0],
+                    ['国Ⅱ',    17.0],
+                    ['国Ⅲ',    2.0],
+                    ['国Ⅳ',    4.0],
+                    ['国Ⅴ及以上',    19.0],
+                ]
+            }]
+        });
+    }
+    bbChartDiv()
+/*3333333333333333333*/
+    function ccChartDiv(){
+        $('#ccchartdiv').highcharts({
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            credits : {
+                enabled:false//不显示highCharts版权信息
+            },
+            title: {
+                text: 'NOX超标车辆排放标准占比',
+                align:'left',
+                style: {
+                    fontSize: '18px',
+                    fontWeight:'bold',
+                }
+            },
+            colors:['#7EB033','#FD931A','#934EF6','#FF5543','#5EBBDD','#FFE54A'],
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: false,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'NOX超标车辆排放标准占比',
+                data: [
+                    ['国Ⅰ前',   34.0],
+                    ['国Ⅰ',       24.0],
+                    ['国Ⅱ',    17.0],
+                    ['国Ⅲ',    2.0],
+                    ['国Ⅳ',    4.0],
+                    ['国Ⅴ及以上',    19.0],
+                ]
+            }]
+        });
+    }
+    ccChartDiv()
+
+
+
+/*    444444444*/
+    function ddChartDiv(){
+        $('#ddchartdiv').highcharts({
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45
+                }
+            },
+            credits : {
+                enabled:false//不显示highCharts版权信息
+            },
+            colors:['#B0DC09','#77BDE1','#77BDE1','#FAD000','#AFDC05','#5E7178'],
+            title: {
+                text: 'PM超标车辆排放标准占比',
+                align:'left',
+                style: {
+                    fontSize: '18px',
+                    fontWeight:'bold',
+                }
+            },
+
+            plotOptions: {
+                pie: {
+                    innerSize: 100,
+                    depth: 45
+                }
+            },
+            series: [{
+                name: 'PM超标车辆排放标准占比',
+                data:[
+                    ['国Ⅰ前',   34.0],
+                    ['国Ⅰ',       24.0],
+                    ['国Ⅱ',    17.0],
+                    ['国Ⅲ',    2.0],
+                    ['国Ⅳ',    4.0],
+                    ['国Ⅴ及以上',    19.0],
+                ]
+            }]
+        });
+    }
+    ddChartDiv()
+
+</script>
+</html>

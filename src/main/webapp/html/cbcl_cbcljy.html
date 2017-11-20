@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bg_charts.css">
+    <script src="../js/jquery2.0.js"></script>
+    <script src="../laydate/laydate.js"></script>
+    <script src="../js/echarts.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-more.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/solid-gauge.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-3d.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/exporting.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/data.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/drilldown.js"></script>
+</head>
+<body>
+    <nav class="float_l">
+        <ul>
+            <li class="nav_li">
+                <a > <img src="../images/icon_1.png" class="nav_icon" alt=""> 全国机动车保有量</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_2.png" class="nav_icon" alt=""> 排放量现状分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_3.png" class="nav_icon" alt=""> 趋势及关联分析</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_4.png" class="nav_icon" alt=""> 超标车辆分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_5.png" class="nav_icon" alt=""> 高排放车辆分析</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="float_l charts_detail">
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>地区排名</li>
+                <li><a href="cbcl_fltj.html">分类统计</a></li>
+                <li><a href="cbcl_rllx.html">燃料类型统计</a></li>
+                <li><a href="cbcl_pfbz.html">排放标准统计</a></li>
+                <li><a href="cbcl_cbch.html">超标车型统计</a></li>
+                <li class="main_ul_active"><a href="cbcl_cbcljy.html">超标车辆检验机构统计</a></li>
+                <li>使用年限统计</li>
+                <li>行驶里程统计</li>
+                <li>超标车辆查询</li>
+            </ul>
+        </div>
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择省</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                     </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择市</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+                </li>
+                <li>
+                    时间选择  <input type="text" id="startTime" class="txtinput startTime"  name="startTime">
+                </li>
+                <li>
+                  <input type="text" id="endTime" class="txtinput endTime"  name="endTime">
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">统计车型选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">企业选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <input type="button" value="搜索" class="nav_search">
+                </li>
+            </ul>
+        </div>
+        <div class="charts_div" id="chart_CO"></div>
+        <div class="charts_div" id="chart_HC"></div>
+        <div class="charts_div" id="chart_NOX"></div>
+        <div class="charts_div" id="chart_PM"></div>
+    </div>
+</body>
+<script>
+    $(".nav_li").eq(3).addClass("nav_active");
+    $(".nav_li").click(function(){
+        $(this).addClass("nav_active").siblings().removeClass("nav_active");
+    })
+    laydate({
+        elem: '#startTime',
+        event: 'focus'
+    });
+    laydate({
+        elem: '#endTime',
+        event: 'focus'
+    });
+
+/*  33333333333333  统计图-chart_NOX超标车辆检验机构统计*/
+    function showNoxChart(){
+        var chart_NOX = echarts.init(document.getElementById('chart_NOX'));
+        chart_NOX.setOption({
+            title: {
+                text: 'NOX超标车辆检验机构统计',
+                x: 'left'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{b} : {c} ({d}%)"
+            },
+            color:['#59B2DC','#7BC8D7','#25936E','#59AF80','#A9D7BA','#F596AA','#F4A7B9','#DB8E72','#FB9A67','#E9A368'],
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                right: 20,
+                top: 30,
+                bottom: 20,
+                data: [
+                    {value:800, name:'检测机构4'},
+                    {value:600, name:'检测机构2'},
+                    {value:500, name:'检测机构6'},
+                    {value:500, name:'检测机构3'},
+                    {value:455, name:'检测机构8'},
+                    {value:300, name:'检测机构1'},
+                    {value:214, name:'检测机构5'},
+                    {value:200, name:'检测机构10'},
+                    {value:187, name:'检测机构7'},
+                    {value:145, name:'检测机构9'}
+                ],
+            },
+            toolbox: {
+                show : true,
+                right:20,
+                feature : {
+                    saveAsImage : {show: true}
+                }
+            },
+           /* calculable : true,*/
+            series : [
+                {
+                    name:'半径模式',
+                    type:'pie',
+                    radius : [50, 110],
+                    center : ['40%', '50%'],
+                    roseType : 'radius',
+                    label: {
+                        normal: {
+                            show: false
+                        }/*,
+                        emphasis: {
+                            show: true
+                        }*/
+                    },
+                    lableLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:  [
+                        {value:800, name:'检测机构4'},
+                        {value:600, name:'检测机构2'},
+                        {value:500, name:'检测机构6'},
+                        {value:500, name:'检测机构3'},
+                        {value:455, name:'检测机构8'},
+                        {value:300, name:'检测机构1'},
+                        {value:214, name:'检测机构5'},
+                        {value:200, name:'检测机构10'},
+                        {value:187, name:'检测机构7'},
+                        {value:145, name:'检测机构9'}
+                    ],
+
+                },
+
+            ],
+            backgroundColor: "#fff"
+        })
+
+
+        // 异步加载数据
+/*
+
+        $.get('data.json').done(function (data) {
+            // 填入数据
+            chart_NOX.setOption({
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: 'xxx',
+                    data: data.data
+                }]
+            });
+        });
+*/
+
+        // 异步加载数据
+    }
+    showNoxChart();
+/* 222222222222222222  统计图-HC超标车辆检验机构统计*/
+    function showHcChart(){
+        var chart_HC = echarts.init(document.getElementById('chart_HC'));
+        chart_HC.setOption({
+            title : {
+                text: 'HC超标车辆检验机构统计',
+                x:'left'
+            },
+            toolbox: {
+                show : true,
+                right:20,
+                feature : {
+                    saveAsImage : {show: true}
+                }
+            },
+            color:['#C33531','#2F4553','#61A0A9','#D78062','#8FC7AF','#749F83','#C03633','#CB8620','#BBA29B','#6F7074'],
+            backgroundColor:"#fff",
+            tooltip : {
+                trigger: 'item',
+                formatter: "{b} : {c} ({d}%)"
+            },
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                right: 10,
+                top: 40,
+                bottom: 20,
+                data: [
+                    {value:402, name:'检测机构4'},
+                    {value:200, name:'检测机构6'},
+                    {value:600, name:'检测机构2'},
+                    {value:155, name:'检测机构8'},
+                    {value:800, name:'检测机构1'},
+                    {value:100, name:'检测机构10'},
+                    {value:187, name:'检测机构7'},
+                    {value:145, name:'检测机构9'},
+                    {value:500, name:'检测机构3'},
+                    {value:214, name:'检测机构5'}
+                ],
+            },
+            series : [
+                {
+                    name: '姓名',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['40%', '50%'],
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                       /* emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }*/
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        {value:402, name:'检测机构4'},
+                        {value:200, name:'检测机构6'},
+                        {value:600, name:'检测机构2'},
+                        {value:155, name:'检测机构8'},
+                        {value:800, name:'检测机构1'},
+                        {value:100, name:'检测机构10'},
+                        {value:187, name:'检测机构7'},
+                        {value:145, name:'检测机构9'},
+                        {value:500, name:'检测机构3'},
+                        {value:214, name:'检测机构5'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        })
+    }
+    showHcChart()
+/*  111111111111111111  统计图-CO超标车辆检验机构统计*/
+    function showCoChart(){
+        var chart_CO = echarts.init(document.getElementById('chart_CO'));
+        chart_CO.setOption({
+            title: {
+                text: 'CO超标车辆检验机构统计',
+                left:'left'
+            },
+            toolbox: {
+                show : true,
+                right:20,
+                feature : {
+                    saveAsImage : {show: true}
+                }
+            },
+            backgroundColor:"#fff",
+            color:['#C33531','#2F4553','#61A0A9','#D78062','#8FC7AF','#749F83','#C03633','#CB8620','#BBA29B','#6F7074'],
+          /*  hover提示字*/
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+            series: [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    selectedMode: 'single',
+                    radius: [0, '30%'],
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: true,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    }
+                },
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius: ['40%', '55%'],
+                    label: {
+                        normal: {
+                            formatter: '{b|{b}} {c} {per|{d}%}',
+                           /* backgroundColor: '#eee',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 4,*/
+                            // shadowBlur:3,
+                            // shadowOffsetX: 2,
+                            // shadowOffsetY: 2,
+                            // shadowColor: '#999',
+                            // padding: [0, 7],
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                // abg: {
+                                //     backgroundColor: '#333',
+                                //     width: '100%',
+                                //     align: 'right',
+                                //     height: 22,
+                                //     borderRadius: [4, 4, 0, 0]
+                                // },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 12,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    /*color: '#eee',
+                                    backgroundColor: '#334455',*/
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
+                        }
+                    },
+                    data:[
+                        {value:402, name:'检测机构4'},
+                        {value:200, name:'检测机构6'},
+                        {value:600, name:'检测机构2'},
+                        {value:155, name:'检测机构8'},
+                        {value:800, name:'检测机构1'},
+                        {value:100, name:'检测机构10'},
+                        {value:187, name:'检测机构7'},
+                        {value:145, name:'检测机构9'},
+                        {value:500, name:'检测机构3'},
+                        {value:214, name:'检测机构5'}
+                    ]
+                }
+            ]
+        })
+    }
+    showCoChart()
+    function showPMChart(){
+        Highcharts.chart('chart_PM', {
+            chart: {
+                type: 'column'
+            },
+            credits : {
+                enabled:false//不显示highCharts版权信息
+            },
+            colors:['#D13F51','#BE6A2F','#E4AA3B','#C5BA4C','#A1C24C','#6BBA4A','#56BA74','#53BBA0','#4BABC1','#398ACB'],
+            title: {
+                text: 'PM超标车辆检验机构统计',
+                align:'left',
+                style: {
+                    fontSize: '18px',
+                    fontWeight:'bold',
+                }
+            },
+
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%'
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b><br/>'
+            },
+            series: [{
+                name: '检验机构1',
+                colorByPoint: true,
+                data: [{
+                    name: '检验机构1',
+                    y: 3,
+                }, {
+                    name: '检验机构2',
+                    y: 4,
+                }, {
+                    name: '检验机构3',
+                    y: 5,
+                }, {
+                    name: '检验机构4',
+                    y: 6,
+                }, {
+                    name: '检验机构6',
+                    y: 7,
+                }, {
+                    name: '检验机构7',
+                    y: 12,
+                }, {
+                    name: '检验机构8',
+                    y: 15,
+                }, {
+                    name: '检验机构9',
+                    y: 18,
+                }, {
+                    name: '检验机构10',
+                    y: 24,
+                }]
+            }],
+
+        });
+    }
+    showPMChart();
+</script>
+</html>

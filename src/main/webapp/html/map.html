@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" media="screen" href="../css/style.css">
+  <link rel="stylesheet" media="screen" href="../ol3/ol.css">
+  <link rel="stylesheet" media="screen" href="../css/map.css">
+   <link rel="stylesheet" media="screen" href="../css/video.css">
+</head>
+<body>
+  <div id="map">
+    <div class="checkbox_box">
+      <ul>
+        <li>
+          <i  class="changeBg"></i>
+          <span>遥测固定点位</span>
+        </li>
+        <li>
+          <i  class="changeBg"></i>
+          <span>遥测移动点位</span>
+        </li>
+        <li>
+          <i></i>
+          <span>遥测站分布图</span>
+        </li>
+        <li>
+          <i></i>
+          <span>环保管理机构</span>
+        </li>
+        <li>
+          <i></i>
+          <span>机动车生产企业</span>
+        </li>
+        <li>
+          <i></i>
+          <span>车辆聚集区域</span>
+        </li>
+        <li>
+          <i></i>
+          <span>工程机械企业</span>
+        </li>
+      </ul>
+    </div>
+    <div class="p_box">
+          <i></i>
+        </div>
+    <div style="display:none">
+      <div id="marker" class="marker" title="Marker">       
+      </div>
+    </div>
+    <div class="toggle_img">
+      <img src="../images/ss_04.png" class="tab_img">
+      <div class="toggle_box ">
+      	<img src="../images/ss-2_03.png" class="close_img">
+        <div>
+          <div class="t_bg_img">
+            <div class="t_title">
+              <span>预警信息</span>
+            </div>
+            <div>
+              <ul class="t_ul">
+                  <li>
+                    <div><span>城市</span></div>
+                    <div><span>点位</span></div>
+                    <div class="ld"><span>路段</span></div>
+                    <div class="cp"><span>车牌</span></div>
+                    <div class="xx"><span>详细</span></div>
+                </li>
+              </ul>
+              <ul class="t_ul" id="scroll_ul">                
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div><div class="t_bg_img">
+            <div class="t_title">
+              <span>运行工况信息</span>
+            </div>
+            <div>
+              <ul class="t_ul yxgk_ul">
+                <li>
+                  <div><span>温度</span></div>
+                  <div><span class="wd"></span></div>
+                  <div><span>速度</span></div>
+                  <div><span class="sd"></span></div>
+                  
+                </li>
+                <li>
+                  <div><span>湿度</span></div>
+                  <div><span class="shid"></span></div>
+                  <div><span>加速度</span></div>
+                  <div><span class="jsd"></span></div>                  
+                </li>
+                <li>
+                  <div><span>风速</span></div>
+                  <div><span class="fs"></span></div>
+                  <div><span>VSP</span></div>
+                  <div><span class="vsp"></span></div>                  
+                </li>
+                <li>
+                  <div><span>气压</span></div>
+                  <div><span class="qy"></span></div>
+                  <div><span>坡度</span></div>
+                  <div><span class="pd"></span></div>                  
+                </li>
+              </ul>
+            </div>
+        </div></div>
+        <div><div class="t_bg_img">
+          <div class="t_title">
+              <span>污染物信息</span>
+          </div>         
+          <div>
+            <div class="wrw_ul_box">
+              <span class="date">2017-11-16 13:46</span>
+              <ul class="t_ul">
+                <li>
+                  <div>
+                    <span>PM</span>
+                  </div>
+                  <div>
+                    <span  class="wrw_pm"></span>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span>NOX</span>
+                  </div>
+                  <div>
+                    <span  class="wrw_nox"></span>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span>CO</span>
+                  </div>
+                  <div>
+                    <span  class="wrw_co"></span>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span>HC</span>
+                  </div>
+                  <div>
+                    <span  class="wrw_hc"></span>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <span>YDZ</span>
+                  </div>
+                  <div>
+                    <span  class="wrw_ydz"></span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          	<div  id="main" style="width: 80%;height:100%;"></div>
+          </div>
+        </div></div>
+        <div><div class="t_bg_img">
+          <div class="t_title">
+              <span>监测点位视频</span>
+              <span class="date right">2017-11-16 13:46</span>
+          </div>  
+          <div class="vid-wrappper">
+            <video id="my-video" class="video-js" controls  width="280" height="85"
+                 loop="true" preload>
+                <source src="../v/birds.mp4" type="video/mp4">
+            </video>
+            <script src="../js/video.js"></script> 
+            <script type="text/javascript">
+         
+          </script>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+
+
+<script src="../js/jquery-1.9.1.min.js"></script>
+<script src="../ol3/ol.js"></script>
+<script src="../js/scroll.js"></script>
+<script src="../js/echarts.js"></script>
+<script type="text/javascript">
+
+  var coor = ol.proj.transform([104.07214, 30.57883], 'EPSG:4326', 'EPSG:3857');  
+  var view = new ol.View({  
+    center:coor,  
+    zoom:10  
+  });  
+  var map = new ol.Map({  
+    target:'map',  
+    layers:[  
+      new ol.layer.Tile({  
+        title: "路网图", 
+        source:new ol.source.XYZ({                             
+          url:"http://t2.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}"  
+        })  
+      }),  
+      new ol.layer.Tile({  
+        title: "路网图中文标注",
+        source:new ol.source.XYZ({                                
+          url: "http://t2.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}"  
+        })  
+      })                         
+    ],  
+    view:view 
+  });
+  map.addControl(new ol.control.ZoomSlider({  })); 
+  function cut(e, num) {
+	    $(e).each(function () {
+	        var s = $(this).text().length;
+	        var str = $(this).html();
+	        if (s > num) {
+	            var strN = str.substring(0, num);
+	            strN += "";
+	            $(this).html(strN);
+	        }
+	    });
+	}
+  var getTime = function (){
+    var dataTime = new Date();
+    var Y = dataTime.getFullYear();
+    var nNum = ["1","2","3","4","5","6","7","8","9","10","11","12"];
+    var M = dataTime.getMonth();
+    var currentM = nNum[M];
+    var currentD = dataTime.getDate();
+    var hours = dataTime.getHours();
+    var minutes = dataTime.getMinutes();
+    if(minutes <= 9)
+    minutes = "0" + minutes;
+    dataTime = (Y + "-" + currentM +"-"+ currentD + " " + hours +':' + minutes );   
+    return dataTime;
+};
+
+$(".date").html(getTime())
+</script>
+<script type="text/javascript">
+  var t = false;
+  $('.checkbox_box li').click(function(){
+    if(t){
+      $(this).find('i').removeClass("changeBg");
+      t = false;
+    }else{
+      $(this).find('i').addClass("changeBg");
+      t = true;
+    }
+  })
+
+  $.post('../../rmove/testPoint/show.do',function(data){
+			$.each(data,function(i,m){		
+				var point = new Array();
+				var marker = new Array();
+				var e = new Array();
+				var xPercentage = data[i].percentage;
+				var bPercentage = xPercentage.toFixed(4);				
+				var cPercentage =bPercentage.slice(2,4)+"."+bPercentage.slice(4,6)+"%";
+				e[i] =  '<div id = yjzb'+i+' data-id='+data[i].id+' class="open_box"><img src="../images/s.png"><div class="ab_addressImg"><div class="ab_addressImg_b">'+cPercentage+'</div><div class="ab_addressImg_b_t">'+data[i].pointName+'</div></div></div>';
+				document.getElementById('marker').innerHTML=e[i];
+				var p0 = data[i].pointLng;
+				var p1 = data[i].pointLat;
+				point[i] = ol.proj.fromLonLat([p0,p1]);
+				marker[i] = new ol.Overlay({
+					position:point[i],
+					stopEvent:false,
+					element:document.getElementById('yjzb'+i),
+					positioning:'center-center'
+				});
+				map.addOverlay(marker[i]);
+			})	 
+			  $(".open_box").click(function(){
+				  $(".p_box").find("div").remove();
+					  var teamId = $(this).attr('data-id');
+					  $.post('../../rmove/testPoint/point',{id:teamId},function(data){
+						  $(".p_box").show()
+						  var html = '<div><span class="f_span">单位名称</span><span class="s_span">监测点位置</span></div><div class="b_text"><span class="f_span cut">'+data.pointName+'</span><span class="s_span cut">'+data.addr+'</span></div><div><span class="f_span">车牌信息</span><span class="s_span">污染物信息</span></div><div class="b_text"><span class="f_span">'+data.license+'</span><span class="s_span">PM:'+data.pm+'</span><span>NOX:'+data.nox+'</span></div><div class="b_text"><span class="f_span">'+data.license+'</span><span class="s_span">CO:'+data.co+'</span><span>YDZ:'+data.ydz+'</span></div><div class="b_text"><span class="f_span">'+data.license+'</span><span class="s_span">HC:'+data.hc+'</span></div><div class="f_span">车流量信息</div><div class="b_text">'+data.total+'</div>'
+					 	$(".p_box").append(html)
+					 	cut(".cut",4);
+					  })
+					pointc(teamId)
+	  				pollt(teamId)
+				})
+				$(".p_box i").click(function(){
+					$(".p_box").hide()
+				})
+	});
+	$.post('../../rmove/testPoint/forewarning',function(data){
+		var html = "";
+	  	$.each(data,function(i,m){
+			html += '<li data-id='+m.overId+'><div><span class="cut">'+m.city+'</span></div><div><span class="cut">'+m.pointName+'</span></div><div class="ld"><span class="cut">'+m.street+'</span></div><div class="cp"><span>'+m.license+'</span></div><div class="xx"><span><img src="../images/首页-实时监测-1_24.png"></span></div></li>'
+		}) 
+		
+		$("#scroll_ul").html(html)
+		cut(".cut",3);
+	  	$("#scroll_ul li").click(function(){
+	  		var condId = $(this).attr("data-id")  		
+	  		pointc(condId)
+	  		pollt(condId)
+	  	})
+	})
+function pointc(condId){
+		$.post('../../rmove/testPoint/pointCondition',{id:condId},function(m){
+  			$(".yxgk_ul .wd").html(m.temp);
+  			$(".yxgk_ul .sd").html(m.speed);
+  			$(".yxgk_ul .shid").html(m.hum);
+  			$(".yxgk_ul .jsd").html(m.acc);
+  			$(".yxgk_ul .fs").html(m.wspeed);
+  			$(".yxgk_ul .vsp").html(m.vsp);
+  			$(".yxgk_ul .qy").html(m.bp);
+  			$(".yxgk_ul .pd").html(m.slope);
+  		})
+}
+function pollt(condId){
+	$.post('../../rmove/testPoint/pollutionInfo',{id:condId},function(m){
+		console.log(m)
+			$(".wrw_pm").html(m.pm);
+			$(".wrw_nox").html(m.nox);
+			$(".wrw_co").html(m.co);
+			$(".wrw_hc").html(m.hc);
+			$(".wrw_ydz").html(m.ydz);
+			var myChart = echarts.init(document.getElementById('main'));
+			option = {
+					 tooltip : {  
+				            formatter: "{a} <br/>{c}{b}"  
+				        },  
+				      toolbox: {  
+				            show: true,  
+				            feature: {  
+				                restore: {show: true},  
+				                saveAsImage: {show: true}  
+				            }  
+				        }, 
+				    series : [
+				    	{  
+			                type: 'gauge',  
+			                z: 3,  
+			                min: 0,  
+			                max: 120,             
+			                splitNumber: 12,                 
+			                axisLine: {          
+			                    lineStyle: {       
+			                        width: 3                  
+			                    }  
+			                },  
+			                axisTick: {           
+			                    length: 5,       
+			                    lineStyle: {   
+			                        color: '#5B8BC9'  
+			                    }  
+			                },  
+			                splitLine: {         
+			                    length: 10,         
+			                    lineStyle: {    
+			                        color: '#5B8BC9'  
+			                    }  
+			                },  
+			                title : {  
+			                    textStyle: {                             
+			                        fontSize: 10,                          
+			                        color:"#5B8BC9"  
+			                    }  
+			                },  
+			                detail : {  
+			                    textStyle: {     
+			                        
+			                    }  
+			                },  
+			                data:[{value: m.rgb, textStyle:{color:"#000000"}, name: ' 林格曼黑度'}]  
+			            }
+				    ]
+				};	                   
+				myChart.setOption(option);     
+		})
+}
+$(document).ready(function(){
+  $("#scroll_ul").scrollQ();
+}); 
+var myPlayer = videojs('my-video');
+videojs("my-video").ready(function(){
+  var myPlayer = this;              
+});
+$(".tab_img").click(function(){
+	$(".toggle_box").fadeToggle("slow",function(){
+		myPlayer.play();
+		$(".tab_img").hide();
+	});
+})
+ $(".close_img").click(function(){
+	 $(".toggle_box").fadeToggle("slow",function(){
+		 myPlayer.pause();
+		 $(".tab_img").fadeIn();
+	 });
+ })      
+</script>
+</body>
+</html>

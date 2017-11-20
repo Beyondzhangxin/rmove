@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bg_charts.css">
+    <script src="../js/jquery2.0.js"></script>
+    <script src="../laydate/laydate.js"></script>
+    <script src="../js/echarts.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-more.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/solid-gauge.js"></script>
+    <script src="../Highcharts-6.0.2/code/highcharts-3d.js"></script>
+    <script src="../Highcharts-6.0.2/code/modules/exporting.js"></script>
+</head>
+<body>
+  <!--  <div class="index_header">
+        <img src="../images/icon_17.png" class="index_icon float_l" alt="">
+        <span class="float_l index_title_span">机动车遥感监测分析系统</span>
+        <ul class="index_nav_ul">
+            <li><a><i class="index_li_icon"><span>实时监测</span></i></a></li>
+            <li><a><i class="index_li_icon index_li_icon2"><span>运行统计</span></i></a></li>
+            <li><a><i class="index_li_icon"><span>实时监测</span></i></a></li>
+        </ul>
+    </div>-->
+    <nav class="float_l">
+        <ul>
+            <li class="nav_li">
+                <a > <img src="../images/icon_1.png" class="nav_icon" alt=""> 全国机动车保有量</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_2.png" class="nav_icon" alt=""> 排放量现状分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_3.png" class="nav_icon" alt=""> 趋势及关联分析</a>
+            </li>
+            <li class="nav_li">
+                <a ><img src="../images/icon_4.png" class="nav_icon" alt=""> 超标车辆分析</a>
+            </li>
+            <li class="nav_li">
+                <a><img src="../images/icon_5.png" class="nav_icon" alt=""> 高排放车辆分析</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="float_l charts_detail">
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>地区排名</li>
+                <li><a href="cbcl_fltj.html">分类统计</a></li>
+                <li><a href="cbcl_rllx.html">燃料类型统计</a></li>
+                <li><a href="cbcl_pfbz.html">排放标准统计</a></li>
+                <li class="main_ul_active"><a href="cbcl_cbch.html">超标车型统计</a></li>
+                <li ><a href="cbcl_cbcljy.html">超标车辆检验机构统计</a></li>
+                <li>使用年限统计</li>
+                <li>行驶里程统计</li>
+                <li>超标车辆查询</li>
+            </ul>
+        </div>
+        <div class="main_nav">
+            <ul class="main_nav_ul">
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择省</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                     </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">请选择市</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+                </li>
+                <li>
+                    时间选择  <input type="text" id="startTime" class="txtinput startTime"  name="startTime">
+                </li>
+                <li>
+                    时间选择  <input type="text" id="endTime" class="txtinput endTime"  name="endTime">
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">统计车型选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <select name="" id="">
+                        <option value="">企业选择</option>
+                        <option value="">区域选择</option>
+                        <option value="">区域选择</option>
+                    </select>
+
+                </li>
+                <li>
+                    <input type="button" value="搜索" class="nav_search">
+                </li>
+            </ul>
+        </div>
+        <div class="charts_div" id="cbch_chart_CO">
+        </div>
+        <div class="charts_div" id="chart_BM_HC"></div>
+        <div class="charts_div" id="chart_BM_NOX"></div>
+        <div class="charts_div" id="chart_BM_PM"></div>
+    </div>
+</body>
+<script>
+    $(".nav_li").eq(3).addClass("nav_active");
+    $(".nav_li").click(function(){
+        $(this).addClass("nav_active").siblings().removeClass("nav_active");
+    })
+    laydate({
+        elem: '#startTime',
+        event: 'focus'
+    });
+    laydate({
+        elem: '#endTime',
+        event: 'focus'
+    });
+
+    /* 1111111111111111111   统计图-chart_NOX超标车辆检验机构统计*/
+    function showBMChartCo(){
+        Highcharts.chart('cbch_chart_CO', {
+                    chart: {
+                        type: 'solidgauge',
+                        marginTop: 50
+                    },
+                    title: {
+                        text: '宝马企业中CO超标车型分担率',
+                        align:'left',
+                        style: {
+                            fontSize: '18px',
+                            fontWeight:'bold',
+                        },
+                    },
+            credits : {
+                enabled:false//不显示highCharts版权信息
+            },
+                    tooltip: {
+                        borderWidth: 0,
+                        backgroundColor: 'none',
+                        shadow: false,
+                        style: {
+                            fontSize: '16px'
+                        },
+                        pointFormat: '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}%</span>',
+                        positioner: function (labelWidth, labelHeight) {
+                            return {
+                                x: 280 - labelWidth / 2,
+                                y: 150
+                            };
+                        }
+                    },
+                    pane: {
+                        startAngle: 80,
+                        endAngle: 440,
+                        background: [{ // Track for Move
+                            outerRadius: '120%',
+                            innerRadius: '90%',
+                            backgroundColor: '#fff',
+                            //Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.3).get(),
+                            borderWidth: 0
+                        }, { // Track for Exercise
+                            outerRadius: '80%',
+                            innerRadius: '80%',
+                            backgroundColor: '#fff',
+                            borderWidth: 0
+                        }, { // Track for Stand
+                            outerRadius: '50%',
+                            innerRadius: '70%',
+                            backgroundColor: '#fff',
+                            borderWidth: 0
+                        }]
+                    },
+                    yAxis: {
+                        min: 0,
+                        max: 100,
+                        lineWidth: 0,
+                        tickPositions: []
+                    },
+                    plotOptions: {
+                        solidgauge: {
+                            borderWidth: '13px',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            linecap: 'round',
+                            stickyTracking: false
+                        }
+                    },
+                    series: [{
+                        name: '车型3',
+                        borderColor:'#235368',
+                        data: [{
+                            color: '#235368',
+                            radius: '100%',
+                            innerRadius: '100%',
+                            y: 89
+                        }]
+                    }, {
+                        name: '车型2',
+                        borderColor:'#B72A21',
+                        data: [{
+                            color: '#B72A21',
+                            radius: '90%',
+                            innerRadius: '90%',
+                            y: 78
+                        }]
+                    },{
+                        name: '车型1',
+                        borderColor:'#EB6029',
+                        data: [{
+                            color: '#EB6029',
+                            radius: '80%',
+                            innerRadius: '80%',
+                            y: 67
+                        }]
+                    },{
+                        name: '车型6',
+                        borderColor:'#E8A727',
+                        data: [{
+                            color: '#E8A727',
+                            radius: '70%',
+                            innerRadius: '70%',
+                            y: 56
+                        }]
+                    },{
+                        name: '车型4',
+                        borderColor:'#63B5B3',
+                        data: [{
+                            color: '#63B5B3',
+                            radius: '60%',
+                            innerRadius: '60%',
+                            y: 45
+                        }]
+                    },{
+                        name: '车型5',
+                        borderColor: '#A2D7D1',
+                        data: [{
+                            color: '#A2D7D1',
+                            radius: '50%',
+                            innerRadius: '50%',
+                            y:32
+                        }]
+                    }]
+                }
+        );
+    }
+    showBMChartCo();
+
+/* 3333333333   统计图-chart_BM_NOX超标车辆检验机构统计*/
+    function showBmNoxChart(){
+        var chart_BM_NOX = echarts.init(document.getElementById('chart_BM_NOX'));
+        chart_BM_NOX.setOption({
+            title : {
+                text: '宝马企业中NOX超标车型分担率',
+                x:'left'
+            },
+            toolbox: {
+                show : true,
+                right:20,
+                feature : {
+                    saveAsImage : {show: true}
+                }
+            },
+            color:['#D5393C','#E5AC3B','#EDCF34','#5EA154','#126199','#59A1C9'],
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+         /*   legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+            },*/
+            series: [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    selectedMode: 'single',
+                    radius: [0, '30%'],
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    }
+                },
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius: ['40%', '55%'],
+                    label: {
+                        normal: {
+                            formatter: '{b|{b}} {c} {per|{d}%}',
+                            /* backgroundColor: '#eee',
+                             borderColor: '#aaa',
+                             borderWidth: 1,
+                             borderRadius: 4,*/
+                            // shadowBlur:3,
+                            // shadowOffsetX: 2,
+                            // shadowOffsetY: 2,
+                            // shadowColor: '#999',
+                            // padding: [0, 7],
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                // abg: {
+                                //     backgroundColor: '#333',
+                                //     width: '100%',
+                                //     align: 'right',
+                                //     height: 22,
+                                //     borderRadius: [4, 4, 0, 0]
+                                // },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 12,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    /*color: '#eee',
+                                     backgroundColor: '#334455',*/
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
+                        }
+                    },
+                    data:[
+                        {value:800, name:'车型5'},
+                        {value:600, name:'车型4'},
+                        {value:500, name:'车型6'},
+                        {value:214, name:'车型1'},
+                        {value:200, name:'车型2'},
+                        {value:100, name:'车型3'}
+                    ],
+                }
+            ],
+            backgroundColor: "#fff"
+        })
+
+
+        // 异步加载数据
+/*
+
+        $.get('data.json').done(function (data) {
+            // 填入数据
+            chart_NOX.setOption({
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: 'xxx',
+                    data: data.data
+                }]
+            });
+        });
+*/
+
+        // 异步加载数据
+    }
+    showBmNoxChart();
+/*44444444444444    统计图-HC超标车辆检验机构统计*/
+    function showBmPmChart(){
+        var chart_BM_PM = echarts.init(document.getElementById('chart_BM_PM'));
+        chart_BM_PM.setOption({
+            title : {
+                text: '宝马企业中PM超标车型分担率',
+                x:'left'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b}: {c} ({d}%)"
+            },
+            toolbox: {
+                show : true,
+                right:20,
+                feature : {
+                    saveAsImage : {show: true}
+                }
+            },
+            backgroundColor:"#fff",
+            color:['#EE6D34','#10325F','#00A0E8','#23B8BC','#8DC11F','#E8B800'],
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                right: 10,
+                top: 40,
+                bottom: 20,
+                data:[
+                    {value:800, name:'车型5'},
+                    {value:600, name:'车型4'},
+                    {value:500, name:'车型6'},
+                    {value:214, name:'车型1'},
+                    {value:200, name:'车型2'},
+                    {value:100, name:'车型3'}
+                ],
+            },
+            series: [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:800, name:'车型5'},
+                        {value:600, name:'车型4'},
+                        {value:500, name:'车型6'},
+                        {value:214, name:'车型1'},
+                        {value:200, name:'车型2'},
+                        {value:100, name:'车型3'}
+                    ],
+                }
+            ]
+        })
+
+        }
+    showBmPmChart();
+ /*   22222222222222222*/
+    function showBmHcChart(){
+        var chart_BM_HC = echarts.init(document.getElementById('chart_BM_HC'));
+        chart_BM_HC.setOption({
+            title : {
+                text: '宝马企业中HC超标车型分担率',
+                x:'left'
+            },
+            color:['#D5393C','#E5AC3B','#EDCF34','#5EA154','#126199','#59A1C9'],
+            toolbox: {
+                show : true,
+                right:20,
+                feature : {
+                    saveAsImage : {show: true}
+                }
+            },
+            backgroundColor:"#fff",
+            tooltip : {
+                trigger: 'item',
+                formatter: "{b} : {c} ({d}%)"
+            },
+            legend: {
+                type: 'scroll',
+                orient: 'vertical',
+                right: 10,
+                top: 40,
+                bottom: 20,
+                data: [
+                    {value:800, name:'车型5'},
+                    {value:600, name:'车型4'},
+                    {value:500, name:'车型6'},
+                    {value:214, name:'车型1'},
+                    {value:200, name:'车型2'},
+                    {value:100, name:'车型3'}
+                ],
+            },
+            series : [
+                {
+                    name: '姓名',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['40%', '50%'],
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                       /* emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }*/
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        {value:800, name:'车型5'},
+                        {value:600, name:'车型4'},
+                        {value:500, name:'车型6'},
+                        {value:214, name:'车型1'},
+                        {value:200, name:'车型2'},
+                        {value:100, name:'车型3'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        })
+    }
+    showBmHcChart()
+
+</script>
+</html>

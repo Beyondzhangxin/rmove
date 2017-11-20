@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:oracle:thin:@192.168.1.208:1521:mydb</property>
+    <property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+    <mapping class="cn.com.aiidc.rmove.entity.Area"/>
+    <mapping class="cn.com.aiidc.rmove.entity.FuelType"/>
+    <mapping class="cn.com.aiidc.rmove.entity.OverPollutionData"/>
+    <mapping class="cn.com.aiidc.rmove.entity.VehicleInfo"/>
+    <mapping class="cn.com.aiidc.rmove.entity.VehicleType"/>
+    <!-- <property name="connection.username"/> -->
+    <!-- <property name="connection.password"/> -->
+
+    <!-- DB schema will be updated if needed -->
+    <!-- <property name="hbm2ddl.auto">update</property> -->
+  </session-factory>
+</hibernate-configuration>
